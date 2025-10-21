@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menentukan Status Kehadiran Karyawan</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #74b9ff, #0984e3);
+            min-height: 100vh;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            max-width: 700px;
+            width: 100%;
+            text-align: center;
+        }
+        h1 {
+            color: #0984e3;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        select {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .hadir {
+            color: #4CAF50;
+            font-weight: 600;
+        }
+        .sakit {
+            color: #ff9800;
+            font-weight: 600;
+        }
+        .izin {
+            color: #ffeb3b;
+            font-weight: 600;
+        }
+        .alpa {
+            color: #f44336;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Menentukan Status Kehadiran Karyawan</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>No Urut</th>
+                    <th>Nama Karyawan</th>
+                    <th>Status Kehadiran</th>
+                </tr>
+            </thead>
+            <tbody id="karyawan-list">
+                <!-- Baris karyawan akan diisi oleh JavaScript -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Array nama karyawan
+        const karyawan = ["Andi", "Budi", "Citra", "Dodi", "Eka"];
+
+        const karyawanList = document.getElementById('karyawan-list');
+
+        // Fungsi untuk tampilkan daftar karyawan dengan dropdown
+        function tampilkanKaryawan() {
+            karyawan.forEach((nama, index) => {
+                const noUrut = index + 1;
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${noUrut}</td>
+                    <td>${nama}</td>
+                    <td>
+                        <select id="status-${index}" onchange="updateStatus(${index})">
+                            <option value="">Pilih Status</option>
+                            <option value="hadir">Hadir</option>
+                            <option value="sakit">Sakit</option>
+                            <option value="izin">Izin</option>
+                            <option value="alpa">Alpa</option>
+                        </select>
+                        <span id="status-text-${index}" style="margin-left: 10px;"></span>
+                    </td>
+                `;
+                karyawanList.appendChild(row);
+            });
+        }
+
+        // Fungsi untuk update status saat dropdown berubah
+        function updateStatus(index) {
+            const select = document.getElementById(`status-${index}`);
+            const statusText = document.getElementById(`status-text-${index}`);
+            const value = select.value;
+            let text = "";
+            let className = "";
+            if (value === "hadir") {
+                text = "Hadir";
+                className = "hadir";
+            } else if (value === "sakit") {
+                text = "Sakit";
+                className = "sakit";
+            } else if (value === "izin") {
+                text = "Izin";
+                className = "izin";
+            } else if (value === "alpa") {
+                text = "Alpa";
+                className = "alpa";
+            }
+            statusText.textContent = text;
+            statusText.className = className;
+        }
+
+        // Inisialisasi: tampilkan daftar saat halaman load
+        tampilkanKaryawan();
+    </script>
+</body>
+</html>

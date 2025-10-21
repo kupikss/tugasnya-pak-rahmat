@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tugas Belanja dan Diskon</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #74b9ff, #0984e3);
+            min-height: 100vh;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+        }
+        h1 {
+            color: #0984e3;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .total {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        .total .highlight {
+            color: #0984e3;
+        }
+        button {
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #00b894, #00cec9);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 20px;
+        }
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        .hasil {
+            display: none;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Tugas Belanja dan Diskon</h1>
+        <p>Daftar Harga Barang:</p>
+        <table id="harga-table">
+            <thead>
+                <tr>
+                    <th>Barang</th>
+                    <th>Harga Asli (Rp)</th>
+                    <th>Diskon</th>
+                    <th>Harga Akhir (Rp)</th>
+                </tr>
+            </thead>
+            <tbody id="harga-list">
+                <!-- Baris harga akan diisi oleh JavaScript -->
+            </tbody>
+        </table>
+        <button id="hitung-btn">Hitung Total</button>
+        <div class="hasil" id="hasil">
+            <div class="total">
+                <p>Total Harga Asli: <span id="total-asli" class="highlight">0</span></p>
+                <p>Total Harga Akhir (Setelah Diskon): <span id="total-akhir" class="highlight">0</span></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Array harga barang
+        const harga = [12000, 15000, 30000, 10000, 50000];
+
+        const hargaList = document.getElementById('harga-list');
+        const hitungBtn = document.getElementById('hitung-btn');
+        const hasilDiv = document.getElementById('hasil');
+        const totalAsliSpan = document.getElementById('total-asli');
+        const totalAkhirSpan = document.getElementById('total-akhir');
+
+        // Fungsi untuk tampilkan daftar harga (tanpa hitung dulu)
+        function tampilkanHarga() {
+            harga.forEach((h, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>Barang ${index + 1}</td>
+                    <td>${h.toLocaleString()}</td>
+                    <td>-</td>
+                    <td>-</td>
+                `;
+                hargaList.appendChild(row);
+            });
+        }
+
+        // Fungsi untuk hitung total dan diskon
+        function hitungTotal() {
+            let totalAsli = 0;
+            let totalAkhir = 0;
+            // Kosongkan tabel sebelum isi ulang
+            hargaList.innerHTML = '';
+            // Perulangan for untuk tampilkan dan hitung
+            for (let i = 0; i < harga.length; i++) {
+                const h = harga[i];
+                totalAsli += h;
+                let diskon = 0;
+                let hargaAkhir = h;
+                // Percabangan if: jika harga > 30000, diskon 10%
+                if (h > 30000) {
+                    diskon = 10;
+                    hargaAkhir = h * 0.9;  // Diskon 10%
+                }
+                totalAkhir += hargaAkhir;
+                // Tampilkan di tabel
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>Barang ${i + 1}</td>
+                    <td>${h.toLocaleString()}</td>
+                    <td>${diskon}%</td>
+                    <td>${hargaAkhir.toLocaleString()}</td>
+                `;
+                hargaList.appendChild(row);
+            }
+            // Tampilkan total
+            totalAsliSpan.textContent = totalAsli.toLocaleString();
+            totalAkhirSpan.textContent = totalAkhir.toLocaleString();
+            hasilDiv.style.display = 'block';
+        }
+
+        // Event listener untuk tombol hitung
+        hitungBtn.addEventListener('click', hitungTotal);
+
+        // Inisialisasi: tampilkan harga awal
+        tampilkanHarga();
+    </script>
+</body>
+</html>
